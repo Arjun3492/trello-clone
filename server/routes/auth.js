@@ -16,7 +16,8 @@ router.post('/register', upload, [
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
     const { name, email, password } = req.body;
-    const avatar = req.file ? req.file.path : null;
+
+    const avatar = req.file ? req.file.location : null;
 
     try {
         let user = await User.findOne({ email });
@@ -48,9 +49,9 @@ router.post('/login', [
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'Password is required').exists()
 ], async (req, res) => {
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
     const { email, password } = req.body;
     try {
         let user = await User.findOne({ email });

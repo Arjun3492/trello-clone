@@ -6,9 +6,6 @@ const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
 const cors = require('cors');
 const path = require('path');
-const cookieParser = require('cookie-parser');
-
-
 
 
 const app = express();
@@ -23,7 +20,6 @@ const corsOptions = {
     optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
-app.use(cookieParser());
 
 
 // Initializing Middlewares
