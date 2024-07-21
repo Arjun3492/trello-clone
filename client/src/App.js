@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import { Login, Signup, TaskPage } from './pages';
 
 const PrivateRoute = ({ children }) => {
-  return (localStorage.getItem('token') ? children : <Navigate to="/login" />
+  return (localStorage.getItem('user') ? children : <Navigate to="/login" />
   );
 };
 
-const LoginRouteWrapper = ({ children }) => {
-  return (localStorage.getItem('token') ? <Navigate to="/tasks" /> : children)
+const AuthRouteWrapper = ({ children }) => {
+  return (localStorage.getItem('user') ? <Navigate to="/tasks" /> : children)
 };
 
 
@@ -17,11 +17,15 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/login" element={
-          <LoginRouteWrapper>
+          <AuthRouteWrapper>
             <Login />
-          </LoginRouteWrapper>} />
+          </AuthRouteWrapper>} />
 
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup" element={
+          <AuthRouteWrapper>
+            <Signup />
+          </AuthRouteWrapper>} />
+
         <Route exact path='/tasks' element={<PrivateRoute >
           <TaskPage />
         </PrivateRoute>}>

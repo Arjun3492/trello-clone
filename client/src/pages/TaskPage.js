@@ -7,7 +7,7 @@ import { PlusCircleIcon, LogoutIcon } from '@heroicons/react/solid';
 import axiosInstance from '../axios';
 
 const TaskPage = () => {
-  const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [loggedInUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [tasks, setTasks] = useState([]);
   const [search, setSearch] = useState('');
   const [sortedTasks, setSortedTasks] = useState([]);
@@ -25,7 +25,9 @@ const TaskPage = () => {
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const res = await axiosInstance.get('/tasks', { headers: { 'x-auth-token': localStorage.getItem('token') } });
+      const res = await axiosInstance.get('/tasks', {
+        withCredentials: true,
+      });
       setTasks(res.data);
       setSortedTasks(res.data);
     };
@@ -62,7 +64,7 @@ const TaskPage = () => {
     setSortedTasks(reorderedTasks);
 
     try {
-      await axiosInstance.put(`/tasks/${removed._id}`, removed, { headers: { 'x-auth-token': localStorage.getItem('token') } });
+      await axiosInstance.put(`/tasks/${removed._id}`, removed);
     } catch (err) {
       console.error(err.response.data);
     }
@@ -76,7 +78,10 @@ const TaskPage = () => {
         description: taskForm.description,
         column: taskForm.column,
         dueDate: taskForm.dueDate,
-      }, { headers: { 'x-auth-token': localStorage.getItem('token') } });
+      },
+        {
+          withCredentials: true,
+        });
 
       if (res.status !== 200) {
         alert(res.data.msg);
@@ -103,7 +108,7 @@ const TaskPage = () => {
         description: taskForm.description,
         column: taskForm.column,
         dueDate: taskForm.dueDate,
-      }, { headers: { 'x-auth-token': localStorage.getItem('token') } });
+      });
 
       if (res.status !== 200) {
         alert(res.data.msg);
@@ -125,7 +130,7 @@ const TaskPage = () => {
 
   const handleDeleteTask = async (id) => {
     try {
-      const res = await axiosInstance.delete(`/tasks/${id}`, { headers: { 'x-auth-token': localStorage.getItem('token') } });
+      const res = await axiosInstance.delete(`/tasks/${id}`,);
       if (res.status !== 200) {
         alert(res.data.msg);
         return;

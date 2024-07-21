@@ -29,7 +29,6 @@ const Login = () => {
                 alert(response.data.msg);
                 return;
             }
-            localStorage.setItem('token', response.data.token);
             localStorage.setItem('user', JSON.stringify(response.data.user));
             router('/tasks', { replace: true });
         } catch (error) {
