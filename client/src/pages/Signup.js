@@ -9,6 +9,8 @@ const Signup = () => {
     const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(false);
     const router = useNavigate();
+    const { register } = useAuth();
+
 
 
     const handleSignup = async () => {
@@ -22,17 +24,8 @@ const Signup = () => {
 
         try {
             setLoading(true);
-            const response = await axiosInstance.post('/auth/register', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            if (response.status !== 200) {
-                alert(response.data.msg);
-                return;
-            }
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-            router('/tasks', { replace: true });
+            const userLoggedIn = await register(formData);
+            userLoggedIn && router('/tasks', { replace: true });
         } catch (error) {
             console.error('Error during signup:', error.response ? error.response.data : error.msg);
             alert(error.response ? error.response.data.msg : error.message);
