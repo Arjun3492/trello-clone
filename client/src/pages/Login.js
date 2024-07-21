@@ -26,7 +26,9 @@ const Login = () => {
 
             setLoading(true);
             const userLoggedIn = await login(formData);
-            userLoggedIn && router('/tasks', { replace: true });
+            userLoggedIn &&
+                router('/tasks', { replace: true });
+
         } catch (error) {
             console.error('Error during login:', error.response ? error.response.data : error.message);
             alert(error.response ? error.response.data.msg : error.message);

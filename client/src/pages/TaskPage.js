@@ -23,7 +23,9 @@ const TaskPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
+  const user = JSON.parse(localStorage.getItem('user'));
+
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -34,14 +36,15 @@ const TaskPage = () => {
       });
       setTasks(res.data);
       setSortedTasks(res.data);
-    };
 
+    };
     fetchTasks();
   }, []);
 
   const handleLogout = () => {
     logout();
     navigate('/login', { replace: true });
+
   };
 
   const handleSearch = (e) => {
@@ -165,7 +168,7 @@ const TaskPage = () => {
       title: task.title,
       description: task.description,
       column: task.column,
-      dueDate: task.dueDate,
+      dueDate: task.dueDate.split('T')[0],
     });
     setEditTask(task._id);
     setIsEditing(true);
@@ -331,6 +334,7 @@ const TaskPage = () => {
                       name="dueDate"
                       value={taskForm.dueDate}
                       onChange={handleChange}
+                      min={new Date().toISOString().split('T')[0]}
                       className="w-full p-2 border rounded mb-4"
                     />
                   </div>

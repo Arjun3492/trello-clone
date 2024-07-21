@@ -22,15 +22,20 @@ router.post('/register', upload, [
         let user = await User.findOne({ email });
         if (user) return res.status(400).json({ msg: 'User already exists' });
 
-        user = new User({ name, email, password, avatar, token });
+        user = new User({ name, email, password, avatar });
+
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(password, salt);
 
         const payload = { user: { id: user.id } };
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 3600 });
-        user.token = token;
-        await user.save();
-        res.json({ user });
+        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 3600 }, async (err, token) => {
+            if (err) throw err;
+            user.token = token;
+
+            await user.save();
+            res.json({ user });
+        });
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');

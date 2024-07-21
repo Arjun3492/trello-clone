@@ -18,7 +18,7 @@ connectDB();
 
 // Enabling CORS for local development
 const corsOptions = {
-    origin: 'https://trello-tawny-eight.vercel.app',
+    origin: process.env.CLIENT_URL || 'http://localhost:3000',
     credentials: true,
     optionsSuccessStatus: 200
 };
