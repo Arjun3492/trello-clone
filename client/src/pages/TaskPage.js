@@ -203,7 +203,7 @@ const TaskPage = () => {
         <div className="flex items-center space-x-4">
           <img
             className="w-10 h-10 rounded-full"
-            src={process.env.REACT_APP_SERVER_URL + `/${loggedInUser.avatar}`}
+            src={loggedInUser.avatar}
             alt="Profile Avatar"
           />
           <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded flex items-center">

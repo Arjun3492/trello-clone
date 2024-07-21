@@ -7,9 +7,10 @@ This is a full-stack task management application built using React for the front
 1. User authentication (register, login)
 2. Task management (create, read, update, delete)
 3. Drag-and-drop functionality for tasks
-4. User profile with avatar
+4. User profile with avatar (Configured using AWS S3 Bucket)
 5. Search tasks by title
 6. Sort tasks
+7. Test coverage for backend routes using Chai and Mocha
 
 ## Prerequisites
 
@@ -43,6 +44,10 @@ Ensure you have the following installed on your machine:
    PORT=5000
    MONGO_URI=your_mongodb_uri
    JWT_SECRET=your_jwt_secret
+   AWS_ACCESS_KEY_ID=your_aws_access_key_id
+   AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
+   AWS_REGION=your_aws_region
+   AWS_BUCKET_NAME=your_aws_bucket_name
    ```
 
 4. **Run the server:**
