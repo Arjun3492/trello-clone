@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-import axiosInstance from '../axios';
+import { useAuth } from '../provider/authProvider';
 const Login = () => {
+    const { login } = useAuth();
     const router = useNavigate();
     const [loading, setLoading] = useState(false);
 
@@ -24,13 +25,8 @@ const Login = () => {
             e.preventDefault();
 
             setLoading(true);
-            const response = await axiosInstance.post('/auth/login', formData);
-            if (response.status !== 200) {
-                alert(response.data.msg);
-                return;
-            }
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-            router('/tasks', { replace: true });
+            const userLoggedIn = await login(formData);
+            userLoggedIn && router('/tasks', { replace: true });
         } catch (error) {
             console.error('Error during login:', error.response ? error.response.data : error.message);
             alert(error.response ? error.response.data.msg : error.message);
